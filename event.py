@@ -20,7 +20,7 @@ class Event:
         })
 
     @staticmethod
-    def from_json(data_str: str):
+    def from_json(data_str: str) -> 'Event':
         data_dict = json.loads(data_str)
         return Event(
             type=data_dict.get("type"),
@@ -41,10 +41,9 @@ class MessageEvent(Event):
         })
 
     @staticmethod
-    def from_json(data_str: str):
+    def from_json(data_str: str) -> 'MessageEvent':
         data_dict = json.loads(data_str)
-        return Event(
-            type=data_dict.get("type"),
+        return MessageEvent(
             topic=data_dict.get("topic"),
             message=data_dict.get("message"),
         )
