@@ -3,17 +3,16 @@ import asyncio
 import websockets
 
 from common import handle_response
-from event import EventType, Event
+from event import EventType, Event, MessageEvent
 
 
-async def listen(uri, topic):
+async def send(uri, topic, message):
     async with websockets.connect(uri) as websocket:
-        event = Event(EventType.SUBSCRIBE, topic)
+        event = MessageEvent(topic, message)
         await websocket.send(event.to_json())
 
-        while True:
-            response = await websocket.recv()
-            handle_response(response)
+        response = await websocket.recv()
+        handle_response(response)
 
 
 if __name__ == "__main__":
@@ -22,6 +21,6 @@ if __name__ == "__main__":
     # Example usage
     asyncio.get_event_loop().run_until_complete(
         asyncio.gather(
-            listen(uri, "topic1"),  # Client subscribing to "topic1"
+            send(uri, "topic1", "Hello, Topic1!")  # Client sending message to "topic1"
         )
     )
