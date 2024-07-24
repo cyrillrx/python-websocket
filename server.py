@@ -56,6 +56,8 @@ async def handle_event(websocket, event: Event, original_message: str):
         case EventType.PUBLISH:
             message_event = MessageEvent.from_json(original_message)
             await publish(websocket, message_event)
+        case _:
+            print(f"Could not handle event with unknown type: {event.type}")
 
 
 async def subscribe(websocket, topic: str):

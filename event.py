@@ -15,7 +15,7 @@ class Event:
 
     def to_json(self):
         return json.dumps({
-            "type": self.type,
+            "type": self.type.value,
             "topic": self.topic
         })
 
@@ -23,7 +23,7 @@ class Event:
     def from_json(data_str: str) -> 'Event':
         data_dict = json.loads(data_str)
         return Event(
-            type=data_dict.get("type"),
+            type=EventType(data_dict.get("type")),
             topic=data_dict.get("topic")
         )
 
@@ -35,7 +35,7 @@ class MessageEvent(Event):
 
     def to_json(self):
         return json.dumps({
-            "type": self.type,
+            "type": self.type.value,
             "topic": self.topic,
             "message": self.message,
         })
