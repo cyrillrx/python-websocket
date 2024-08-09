@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Chat</title>
+</head>
+<body>
+
+<h1>Open / close connection</h1>
+<form>
+    <button onclick="closeConnection()">Close connection</button>
+</form>
+
+<h1>Subscribe / Unsubscribe</h1>
+<form>
+    <input id="topic" type="text" placeholder="topic">
+    <button onclick="subscribe()">Subscribe</button>
+    <button onclick="unsubscribe()">Unsubscribe</button>
+</form>
+
+<h1>Envoi et reception de message</h1>
+<form>
+    <input id="message" type="text" placeholder="Type a message">
+    <button onclick="sendMessage()">Send</button>
+</form>
+
+<h2>Messages</h2>
+<ul id="messages"></ul>
+
+<script>
+    const ws = new WebSocket('ws://localhost:8765/ljazjgit ');
+    ws.onmessage = function (event) {
+        const messages = document.getElementById('messages');
+        const message = document.createElement('li');
+        message.textContent = event.data;
+        messages.appendChild(message);
+    };
+
+    function closeConnection() {
+        ws.close();
+    }
+
+    function subscribe() {
+        const input = document.getElementById('topic');
+        const message = {
+            type: 'subscribe',
+            topic: input.value,
+        };
+        ws.send(message.toJSON());
+        input.value = '';
+    }
+
+    function unsubscribe() {
+        const input = document.getElementById('topic');
+        const message = {
+            type: 'unsubscribe',
+            topic: input.value,
+        };
+        ws.send(message.toJSON());
+        input.value = '';
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('message');
+        const message = {
+            type: 'close',
+        };
+        ws.send(message.toJSON());
+        input.value = '';
+    }
+</script>
+</body>
+</html>
